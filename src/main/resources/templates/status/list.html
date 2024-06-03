@@ -1,0 +1,30 @@
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org/"
+>
+<head th:replace="~{base :: html-head(~{::title})}">
+    <title>ToDo - status list</title>
+</head>
+<body>
+<nav th:replace="~{base :: navbar}"/>
+<div th:replace="~{auth/login :: login-form}"/>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Display name</th>
+        <th scope="col">Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+     <tr th:each="status: ${statuses}">
+        <th scope="row" th:text="${status.id}"></th>
+        <td th:text="${status.name}"></td>
+        <td th:text="${status.displayName}"></td>
+        <td><button class="btn btn-outline-danger">Delete</button></td> 
+    </tr> 
+    </tbody>
+</table>
+</body>
+</html>

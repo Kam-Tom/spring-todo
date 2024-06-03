@@ -11,7 +11,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity(name = "task_categories") @Table(uniqueConstraints = {
+@Entity(name = "task_categories")
+@Table(uniqueConstraints = {
         @UniqueConstraint(name = "uc_taskcategorymodel_name", columnNames = { "name", "owner_id" })
 })
 public class TaskCategoryModel {
@@ -32,14 +33,19 @@ public class TaskCategoryModel {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof TaskCategoryModel that)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof TaskCategoryModel that))
+            return false;
 
-        if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) return false;
-        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) return false;
+        if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null)
+            return false;
+        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null)
+            return false;
         if (getDescription() != null ? !getDescription().equals(that.getDescription()) : that.getDescription() != null)
             return false;
-        if (getImage() != null ? !getImage().equals(that.getImage()) : that.getImage() != null) return false;
+        if (getImage() != null ? !getImage().equals(that.getImage()) : that.getImage() != null)
+            return false;
         return getOwner() != null ? getOwner().equals(that.getOwner()) : that.getOwner() == null;
     }
 

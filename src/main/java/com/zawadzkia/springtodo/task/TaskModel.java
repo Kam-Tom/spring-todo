@@ -45,7 +45,9 @@ public class TaskModel {
     @JoinColumn(name = "status_id")
     private TaskStatusModel status;
 
-    @ManyToOne @JoinColumn(name = "owner_id") private UserModel owner;
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private UserModel owner;
 
     @Override
     public String toString() {
@@ -63,19 +65,25 @@ public class TaskModel {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof TaskModel taskModel)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof TaskModel taskModel))
+            return false;
 
-        if (getId() != null ? !getId().equals(taskModel.getId()) : taskModel.getId() != null) return false;
+        if (getId() != null ? !getId().equals(taskModel.getId()) : taskModel.getId() != null)
+            return false;
         if (getSummary() != null ? !getSummary().equals(taskModel.getSummary()) : taskModel.getSummary() != null)
             return false;
-        if (getDescription() != null ? !getDescription().equals(taskModel.getDescription()) : taskModel.getDescription() != null)
+        if (getDescription() != null ? !getDescription().equals(taskModel.getDescription())
+                : taskModel.getDescription() != null)
             return false;
-        if (getStartDate() != null ? !getStartDate().equals(taskModel.getStartDate()) : taskModel.getStartDate() != null)
+        if (getStartDate() != null ? !getStartDate().equals(taskModel.getStartDate())
+                : taskModel.getStartDate() != null)
             return false;
         if (getDueDate() != null ? !getDueDate().equals(taskModel.getDueDate()) : taskModel.getDueDate() != null)
             return false;
-        if (getAttachment() != null ? !getAttachment().equals(taskModel.getAttachment()) : taskModel.getAttachment() != null)
+        if (getAttachment() != null ? !getAttachment().equals(taskModel.getAttachment())
+                : taskModel.getAttachment() != null)
             return false;
         if (getCategory() != null ? !getCategory().equals(taskModel.getCategory()) : taskModel.getCategory() != null)
             return false;

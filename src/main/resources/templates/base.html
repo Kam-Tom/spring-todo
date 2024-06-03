@@ -17,7 +17,7 @@
 <body>
 <nav th:fragment="navbar" class="navbar navbar-expand-lg bg-body-tertiary" sec:authorize="isAuthenticated()">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">To Do</a>
+        <a class="navbar-brand" href="/task">To Do</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -28,7 +28,10 @@
                     <a class="nav-link active" aria-current="page" href="#">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
+                    <a class="nav-link" href="/task/category">Categories</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/task/status">Statuses</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
@@ -36,9 +39,9 @@
                         Create
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Task</a></li>
-                        <li><a class="dropdown-item" href="#">Category</a></li>
-                        <li><a class="dropdown-item" href="#">Status</a></li>
+                        <li><a class="dropdown-item" href="/task/create">Task</a></li>
+                        <li><a class="dropdown-item" href="/task/category/create">Category</a></li>
+                        <li><a class="dropdown-item" href="/task/status/create">Status</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">

@@ -1,0 +1,32 @@
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org/"
+>
+<head th:replace="~{base :: html-head(~{::title})}">
+    <title>ToDo - status create</title>
+</head>
+<body>
+<nav th:replace="~{base :: navbar}"/>
+<div th:replace="~{auth/login :: login-form}"/>
+
+<form style="margin: 1%;" th:action="@{/task/status/create}" method="post">
+    <div class="mb-3" style="margin-left: 1%;">
+        <label class="form-label">Name:</label>
+        <input type="text" name="name">
+    </div>
+    <div class="mb-3" style="margin-left: 1%;">
+        <label class="form-label">Display name:</label>
+        <input type="text" name="displayName">
+    </div>
+  <div style="margin: 1%; width: 10%; display: flex; justify-content: space-between; align-self: center;">
+    <button class="btn btn-outline-primary" type="submit">Add</button>
+    <button class="btn btn-outline-danger" type="button" onclick="goBack()">Cancel</button>
+  </div>
+</form>
+</body>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</html>

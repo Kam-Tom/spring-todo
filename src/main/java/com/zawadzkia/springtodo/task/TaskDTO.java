@@ -1,5 +1,6 @@
 package com.zawadzkia.springtodo.task;
 
+import com.zawadzkia.springtodo.task.category.TaskCategoryDTO;
 import com.zawadzkia.springtodo.task.status.TaskStatusDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,5 +28,7 @@ public class TaskDTO implements Serializable {
     private String attachment;
 
     private TaskStatusDTO status;
+
+    private TaskCategoryDTO category;
 
 }
