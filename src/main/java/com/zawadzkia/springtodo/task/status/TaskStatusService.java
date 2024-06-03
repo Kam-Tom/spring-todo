@@ -1,6 +1,8 @@
 package com.zawadzkia.springtodo.task.status;
 
 import com.zawadzkia.springtodo.auth.AppUserDetails;
+import com.zawadzkia.springtodo.task.category.TaskCategoryModel;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -17,12 +19,21 @@ public class TaskStatusService {
     public List<TaskStatusDTO> getUserTaskStatusList() {
         ArrayList<TaskStatusDTO> result = new ArrayList<>();
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(principal instanceof AppUserDetails userDetails) {
+        if (principal instanceof AppUserDetails userDetails) {
             List<TaskStatusModel> allByOwner = taskStatusRepository.findAllByOwner(userDetails.getUser());
             allByOwner.forEach(status -> result.add(new TaskStatusDTO(status.getId(), status.getName(),
                     status.getDisplayName())));
         }
         return result;
+    }
+
+    public void create(TaskStatusDTO statusDTO) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof AppUserDetails userDetails) {
+            TaskStatusModel statusModel = new TaskStatusModel(null, statusDTO.getName(),
+                    statusDTO.getDisplayName(), userDetails.getUser());
+            taskStatusRepository.save(statusModel);
+        }
     }
 
 }

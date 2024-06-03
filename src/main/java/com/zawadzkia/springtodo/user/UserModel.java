@@ -50,7 +50,7 @@ public class UserModel {
     @OneToMany(mappedBy = "owner", orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<TaskCategoryModel> categories = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "owner", orphanRemoval = true)
+    @OneToMany(mappedBy = "owner", orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<TaskStatusModel> statuses = new LinkedHashSet<>();
 
     @Override

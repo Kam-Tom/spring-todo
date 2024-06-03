@@ -47,7 +47,10 @@ public class TaskStatusController {
     String createTask(TaskStatusDTO statusDTO, Model model) {
         System.out.println(statusDTO.getId() + " " + statusDTO.getName() + " " + statusDTO.getDisplayName());
 
-        // taskCategoryService.create(category); // nie ma sesji i nie działa
-        return getStatusList(model);
+        if (statusDTO.getName() == "")
+            return "redirect:/task/status/create";
+
+        taskStatusService.create(statusDTO);
+        return "redirect:/task/status";
     }
 }
