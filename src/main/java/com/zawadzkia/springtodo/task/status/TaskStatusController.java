@@ -21,6 +21,6 @@ public class TaskStatusController {
         TaskDTO taskDTO = taskService.getTaskDTOById(id);
         taskDTO.setStatus(taskStatusDTO);
         taskService.update(taskDTO);
-        return "task/list";
+        return "redirect:/task";
     }
 }

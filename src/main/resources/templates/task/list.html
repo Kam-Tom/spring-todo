@@ -27,9 +27,9 @@
         <td th:text="${task.summary}"></td>
         <td th:text="${task.description}"></td>
         <td>
-            <form id="statusForm" name="statusForm" th:action="/task/status/${task.id}" method="post" onchange="submit()">
-                <select name="status">
-                    <option th:each="status: ${statusList}" th:value="${status.name}" th:text="${status.displayName}"></option>
+            <form th:action="@{/task/status/{id}(id=${task.id})}" method="post" onchange="submit()" th:object="${status}">
+                <select name="id" >
+                    <option th:each="status: ${statusList}" th:value="${status.id}" th:text="${status.displayName}" th:selected="${status.id == task.status.id}"></option>
                 </select>
             </form>        
         </td>
