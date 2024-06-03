@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org/"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{base :: html-head(~{::title})}">
+    <title>ToDo</title>
+</head>
+<body>
+<nav th:replace="~{base :: navbar}"></nav>
+<div th:replace="~{auth/login :: login-form}"></div>
+<div th:replace="~{task/list :: list}"></div>
+</body>
+</html>

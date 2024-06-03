@@ -1,0 +1,16 @@
+:root {
+    --space-cadet: #1b264fff;
+    --delft-blue: #213670ff;
+    --marian-blue: #274690ff;
+    --yinmn-blue: #3f599cff;
+    --true-blue: #4b63a2ff;
+    --true-blue-2: #5168a5ff;
+    --true-blue-3: #546aa7ff;
+    --true-blue-4: #576ca8ff;
+    --jet: #302b27ff;
+    --white-smoke: #f5f3f5ff;
+}
+
+body {
+    background-color: var(--white-smoke);
+}

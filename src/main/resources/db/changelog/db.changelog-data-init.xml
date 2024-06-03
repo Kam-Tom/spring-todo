@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+  <changeSet id="1698686816682-1" author="vagrant">
+    <insert tableName="users">
+      <column name="id" valueNumeric="0" />
+      <column name="username" value="admin"/>
+      <column name="password" value="{noop}admin"/>
+      <column name="enabled" valueBoolean="true"/>
+    </insert>
+  </changeSet>
+  <changeSet id="1698686855967-1" author="vagrant">
+    <insert tableName="users">
+      <column name="id" valueNumeric="1" />
+      <column name="username" value="user"/>
+      <column name="password" value="{noop}user"/>
+      <column name="enabled" valueBoolean="true"/>
+    </insert>
+  </changeSet>
+  <changeSet id="1698686947259-0" author="vagrant">
+    <insert tableName="task_statuses">
+      <column name="name" value="new"/>
+      <column name="display_name" value="New"/>
+      <column name="user_model_id" valueNumeric="0"/>
+    </insert>
+  </changeSet>
+  <changeSet id="1698686947259-1" author="vagrant">
+    <insert tableName="task_statuses">
+      <column name="name" value="new"/>
+      <column name="display_name" value="New"/>
+      <column name="user_model_id" valueNumeric="1"/>
+    </insert>
+  </changeSet>
+  <changeSet id="1698686996248-0" author="vagrant">
+    <insert tableName="task_statuses">
+      <column name="id" valueNumeric="0"/>
+      <column name="name" value="inprogress"/>
+      <column name="display_name" value="In progress"/>
+      <column name="user_model_id" valueNumeric="0"/>
+    </insert>
+  </changeSet>
+  <changeSet id="1698686996248-1" author="vagrant">
+    <insert tableName="task_statuses">
+      <column name="name" value="inprogress"/>
+      <column name="display_name" value="In progress"/>
+      <column name="user_model_id" valueNumeric="1"/>
+    </insert>
+  </changeSet>
+  <changeSet id="1698687060426-0" author="vagrant">
+    <insert tableName="task_statuses">
+      <column name="name" value="done"/>
+      <column name="display_name" value="Done"/>
+      <column name="user_model_id" valueNumeric="0"/>
+    </insert>
+  </changeSet>
+  <changeSet id="1698687060426-1" author="vagrant">
+    <insert tableName="task_statuses">
+      <column name="name" value="done"/>
+      <column name="display_name" value="Done"/>
+      <column name="user_model_id" valueNumeric="1"/>
+    </insert>
+  </changeSet>
+  <changeSet id="1698687112677-0" author="vagrant">
+    <insert tableName="task_categories">
+      <column name="id" valueNumeric="0"/>
+      <column name="name" value="Work"/>
+      <column name="owner_id" valueNumeric="0"/>
+    </insert>
+  </changeSet>
+  <changeSet id="1698687166058-0" author="vagrant">
+    <insert tableName="task_categories">
+      <column name="id" valueNumeric="1"/>
+      <column name="name" value="Home"/>
+      <column name="owner_id" valueNumeric="0"/>
+    </insert>
+  </changeSet>
+  <changeSet id="1698687112677-1" author="vagrant">
+    <insert tableName="task_categories">
+      <column name="id" valueNumeric="2"/>
+      <column name="name" value="Work"/>
+      <column name="owner_id" valueNumeric="1"/>
+    </insert>
+  </changeSet>
+  <changeSet id="1698687166058-1" author="vagrant">
+    <insert tableName="task_categories">
+      <column name="id" valueNumeric="3"/>
+      <column name="name" value="Home"/>
+      <column name="owner_id" valueNumeric="1"/>
+    </insert>
+  </changeSet>
+  <changeSet id="1698689473652-1" author="vagrant">
+    <insert tableName="tasks">
+      <column name="summary" value="Sample Task 1"/>
+      <column name="description" value="Sample description 1"/>
+      <column name="start_date" valueDate="null"/>
+      <column name="category_id" valueNumeric="0"/>
+      <column name="status_id" valueNumeric="0"/>
+      <column name="owner_id" valueNumeric="0"/>
+    </insert>
+  </changeSet>
+
+</databaseChangeLog>

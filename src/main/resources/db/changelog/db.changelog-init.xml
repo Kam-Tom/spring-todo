@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet id="1698686406241-1" author="spring-todo">
+        <createTable tableName="authorities">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_authorities"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="authority" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1698686406241-2" author="spring-todo">
+        <createTable tableName="task_categories">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_task_categories"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="image" type="VARCHAR(255)"/>
+            <column name="owner_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1698686406241-3" author="spring-todo">
+        <createTable tableName="task_statuses">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_task_statuses"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="display_name" type="VARCHAR(255)"/>
+            <column name="user_model_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1698686406241-4" author="spring-todo">
+        <createTable tableName="tasks">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_tasks"/>
+            </column>
+            <column name="summary" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="start_date" type="DATETIME"/>
+            <column name="due_date" type="DATETIME"/>
+            <column name="attachment" type="VARCHAR(255)"/>
+            <column name="category_id" type="BIGINT"/>
+            <column name="status_id" type="BIGINT"/>
+            <column name="owner_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1698686406241-5" author="spring-todo">
+        <createTable tableName="users">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_users"/>
+            </column>
+            <column name="username" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="enabled" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1698686406241-6" author="spring-todo">
+        <addUniqueConstraint columnNames="name, owner_id" constraintName="uc_taskcategorymodel_name"
+                             tableName="task_categories"/>
+    </changeSet>
+    <changeSet id="1698686406241-7" author="spring-todo">
+        <addUniqueConstraint columnNames="name, user_model_id" constraintName="uc_taskstatusmodel_name"
+                             tableName="task_statuses"/>
+    </changeSet>
+    <changeSet id="1698686406241-8" author="spring-todo">
+        <addUniqueConstraint columnNames="username" constraintName="uc_usermodel_username" tableName="users"/>
+    </changeSet>
+    <changeSet id="1698686406241-9" author="spring-todo">
+        <addUniqueConstraint columnNames="password" constraintName="uc_users_password" tableName="users"/>
+    </changeSet>
+    <changeSet id="1698686406241-10" author="spring-todo">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="authorities"
+                                 constraintName="FK_AUTHORITIES_ON_USER" referencedColumnNames="id"
+                                 referencedTableName="users"/>
+    </changeSet>
+    <changeSet id="1698686406241-11" author="spring-todo">
+        <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="tasks"
+                                 constraintName="FK_TASKS_ON_CATEGORY"
+                                 referencedColumnNames="id" referencedTableName="task_categories"/>
+    </changeSet>
+    <changeSet id="1698686406241-12" author="spring-todo">
+        <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="tasks" constraintName="FK_TASKS_ON_OWNER"
+                                 referencedColumnNames="id" referencedTableName="users"/>
+    </changeSet>
+    <changeSet id="1698686406241-13" author="spring-todo">
+        <addForeignKeyConstraint baseColumnNames="status_id" baseTableName="tasks" constraintName="FK_TASKS_ON_STATUS"
+                                 referencedColumnNames="id" referencedTableName="task_statuses"/>
+    </changeSet>
+    <changeSet id="1698686406241-14" author="spring-todo">
+        <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="task_categories"
+                                 constraintName="FK_TASK_CATEGORIES_ON_OWNER" referencedColumnNames="id"
+                                 referencedTableName="users"/>
+    </changeSet>
+    <changeSet id="1698686406241-15" author="spring-todo">
+        <addForeignKeyConstraint baseColumnNames="user_model_id" baseTableName="task_statuses"
+                                 constraintName="FK_TASK_STATUSES_ON_USER_MODEL" referencedColumnNames="id"
+                                 referencedTableName="users"/>
+    </changeSet>
+</databaseChangeLog>
