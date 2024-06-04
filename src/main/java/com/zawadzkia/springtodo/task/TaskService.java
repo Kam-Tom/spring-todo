@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -26,9 +27,20 @@ public class TaskService {
     private final TaskCategoryRepository taskCategoryRepository;
 
     public List<TaskDTO> getTaskList() {
+        return getTaskList(null); 
+    }
+
+    public List<TaskDTO> getTaskList(String search) {
         UserModel user = userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
                 .orElseThrow();
         Set<TaskModel> tasks = user.getTasks();
+        if (search != null && !search.isEmpty()) {
+            String lowerCaseSearch = search.toLowerCase();
+            tasks = tasks.stream()
+                         .filter(task -> task.getSummary().toLowerCase().contains(lowerCaseSearch) || 
+                         (task.getDescription() != null && task.getDescription().toLowerCase().contains(lowerCaseSearch)))
+                         .collect(Collectors.toSet());
+        }
         List<TaskDTO> result = new ArrayList<>();
         tasks.forEach(taskModel -> {
             TaskStatusModel status = taskModel.getStatus();

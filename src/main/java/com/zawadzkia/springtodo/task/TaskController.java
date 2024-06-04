@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -30,7 +31,16 @@ class TaskController {
 
     @GetMapping
     String getTaskList(Model model) {
-        List<TaskDTO> taskList = taskService.getTaskList();
+        return getTaskListCommon(model, null);
+    }
+    
+    @GetMapping(params = "search")
+    String getTaskListWithSearch(Model model, @RequestParam("search") String search) {
+        return getTaskListCommon(model, search);
+    }
+    
+    private String getTaskListCommon(Model model, String search) {
+        List<TaskDTO> taskList = (search == null) ? taskService.getTaskList() : taskService.getTaskList(search);
         List<TaskStatusDTO> userTaskStatusList = taskStatusService.getUserTaskStatusList();
         List<TaskCategoryDTO> userTaskCategoryList = taskCategoryService.getUserTaskCategoryList();
         model.addAttribute("tasks", taskList);
@@ -38,7 +48,6 @@ class TaskController {
         model.addAttribute("categoryList", userTaskCategoryList);
         return "task/list";
     }
-
     @GetMapping({ "/create" })
     String createTask(Model model) {
         List<TaskStatusDTO> userTaskStatusList = taskStatusService.getUserTaskStatusList();

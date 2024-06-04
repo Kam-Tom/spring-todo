@@ -2,10 +2,12 @@ package com.zawadzkia.springtodo.task.status;
 
 import com.zawadzkia.springtodo.task.TaskDTO;
 import com.zawadzkia.springtodo.task.TaskService;
+import com.zawadzkia.springtodo.task.category.TaskCategoryDTO;
 
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/task/status")
@@ -29,6 +32,19 @@ public class TaskStatusController {
         model.addAttribute("statuses", userTaskStatusList);
         return "status/list";
     }
+    
+    @GetMapping(params = "search")
+    String getStatusListWithSearch(Model model, @RequestParam("search") String search) {
+        List<TaskStatusDTO> userTaskStatusList = taskStatusService.getUserTaskStatusList();
+        String lowerCaseSearch = search.toLowerCase();
+        userTaskStatusList = userTaskStatusList.stream()
+                .filter(status -> status.getName().toLowerCase().contains(lowerCaseSearch) || 
+                (status.getDisplayName() != null && status.getDisplayName().toLowerCase().contains(lowerCaseSearch)))
+                .collect(Collectors.toList());
+        model.addAttribute("statuses", userTaskStatusList);
+        return "status/list";
+    }
+    
 
     @PostMapping(value = "/{id}")
     String updateTask(@PathVariable Long id, @ModelAttribute("status") TaskStatusDTO taskStatusDTO) {
