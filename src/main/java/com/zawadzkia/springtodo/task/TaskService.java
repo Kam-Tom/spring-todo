@@ -1,5 +1,6 @@
 package com.zawadzkia.springtodo.task;
 
+import com.zawadzkia.springtodo.auth.AppUserDetails;
 import com.zawadzkia.springtodo.task.category.TaskCategoryDTO;
 import com.zawadzkia.springtodo.task.category.TaskCategoryModel;
 import com.zawadzkia.springtodo.task.category.TaskCategoryRepository;
@@ -27,7 +28,7 @@ public class TaskService {
     private final TaskCategoryRepository taskCategoryRepository;
 
     public List<TaskDTO> getTaskList() {
-        return getTaskList(null); 
+        return getTaskList(null);
     }
 
     public List<TaskDTO> getTaskList(String search) {
@@ -37,9 +38,10 @@ public class TaskService {
         if (search != null && !search.isEmpty()) {
             String lowerCaseSearch = search.toLowerCase();
             tasks = tasks.stream()
-                         .filter(task -> task.getSummary().toLowerCase().contains(lowerCaseSearch) || 
-                         (task.getDescription() != null && task.getDescription().toLowerCase().contains(lowerCaseSearch)))
-                         .collect(Collectors.toSet());
+                    .filter(task -> task.getSummary().toLowerCase().contains(lowerCaseSearch) ||
+                            (task.getDescription() != null
+                                    && task.getDescription().toLowerCase().contains(lowerCaseSearch)))
+                    .collect(Collectors.toSet());
         }
         List<TaskDTO> result = new ArrayList<>();
         tasks.forEach(taskModel -> {
@@ -86,4 +88,17 @@ public class TaskService {
         taskRepository.save(taskModel);
     }
 
+    public void create(TaskDTO taskDTO) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof AppUserDetails userDetails) {
+            TaskCategoryModel taskCategoryModel = taskCategoryRepository
+                    .getReferenceById(taskDTO.getCategory().getId());
+            TaskStatusModel taskStatusModel = taskStatusRepository.getReferenceById(taskDTO.getStatus().getId());
+            TaskModel taskModel = new TaskModel(null, taskDTO.getSummary(),
+                    taskDTO.getDescription(), taskDTO.getStartDate(), taskDTO.getDueDate(), taskDTO.getAttachment(),
+                    taskCategoryModel, taskStatusModel, userDetails.getUser());
+            taskRepository.save(taskModel);
+        }
+
+    }
 }
