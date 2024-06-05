@@ -7,7 +7,7 @@
 </head>
 <body>
 <fieldset th:fragment="login-form" class="card container w-25 mt-3" sec:authorize="isAnonymous()">
-    <form method="post" th:action="@{/auth/process}">
+    <form method="post" th:action="@{/auth/register}">
         <div class="card-body g-3 align-items-center">
             <div class="row mb-3">
                 <div class="col-sm-3">
@@ -25,9 +25,17 @@
                     <input type="text" id="password" name="password" class="form-control" required>
                 </div>
             </div>
+            <div class="row mb-3">
+                <div class="col-sm-3">
+                    <label for="matchingPassword" class="col-form-label">Matching Password</label>
+                </div>
+                <div class="col-sm-9">
+                    <input type="text" id="matchingPassword" name="matchingPassword" class="form-control" required>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-sm-9">
-                    <a href="/auth/register" class="btn btn-success">Register</a>
+                    <a href="/auth/login" class="btn btn-success">Login</a>
                 </div>
                 <div class="col-sm-3">
                     <input class="form-control" type="submit"/>
