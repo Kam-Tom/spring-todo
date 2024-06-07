@@ -8,6 +8,12 @@
 <nav th:replace="~{base :: navbar}"/>
 <div th:replace="~{auth/login :: login-form}"/>
 
+<div th:if="${deleteError}" class="alert alert-danger" role="alert">
+    <p th:text="${deleteError}"></p>
+</div>
+<div th:if="${error}" class="alert alert-danger" role="alert">
+    <p th:text="${deleteError}"></p>
+</div>
 <table class="table">
     <thead>
     <tr>
@@ -24,7 +30,11 @@
         <td th:text="${category.name}"></td>
         <td th:text="${category.description}"></td>
         <td><img src="${category.image}"></img></td>
-        <td><button class="btn btn-outline-danger">Delete</button></td> 
+        <td>
+            <form th:action="@{/task/category/delete/{id}(id=${category.id})}" method="post">
+                <button class="btn btn-outline-danger">Delete</button>
+            </form>
+        </td> 
     </tr> 
     </tbody>
 </table>

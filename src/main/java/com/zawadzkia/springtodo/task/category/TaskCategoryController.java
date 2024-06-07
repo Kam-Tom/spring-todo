@@ -11,7 +11,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.zawadzkia.springtodo.exception.CategoryNotEmptyException;
+import com.zawadzkia.springtodo.exception.UnauthorizedAccessException;
+import com.zawadzkia.springtodo.exception.UsernameAlreadyTakenException;
 import com.zawadzkia.springtodo.task.TaskDTO;
 import com.zawadzkia.springtodo.task.TaskService;
 import com.zawadzkia.springtodo.task.status.TaskStatusDTO;
@@ -65,6 +69,19 @@ public class TaskCategoryController {
             return "redirect:/task/category/create";
 
         taskCategoryService.create(categoryDTO);
+        return "redirect:/task/category";
+    }
+
+    @PostMapping(value = "/delete/{id}")
+    String deleteCategory(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+
+        try {
+            taskCategoryService.deleteCategory(id);
+        } catch (CategoryNotEmptyException | UnauthorizedAccessException e) {
+            redirectAttributes.addFlashAttribute("deleteError", e.getMessage());
+            return "redirect:/task/category";
+        }
+
         return "redirect:/task/category";
     }
 }
