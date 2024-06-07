@@ -8,10 +8,6 @@
 <nav th:replace="~{base :: navbar}"/>
 <div th:replace="~{auth/login :: login-form}"/>
 
-<div th:if="${deleteError}" class="alert alert-danger" role="alert">
-    <p th:text="${deleteError}"></p>
-</div>
-
 <table class="table">
     <thead>
     <tr>

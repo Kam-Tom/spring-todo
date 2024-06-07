@@ -77,7 +77,7 @@ public class TaskCategoryController {
 
         try {
             taskCategoryService.deleteCategory(id);
-        } catch (ResourceNotEmptyException | UnauthorizedAccessException e) {
+        } catch (ResourceNotEmptyException e) {
             redirectAttributes.addFlashAttribute("deleteError", e.getMessage());
             return "redirect:/task/category";
         }

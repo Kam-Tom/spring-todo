@@ -78,7 +78,7 @@ public class TaskStatusController {
 
         try {
             taskStatusService.deleteStatus(id);
-        } catch (ResourceNotEmptyException | UnauthorizedAccessException e) {
+        } catch (ResourceNotEmptyException e) {
             redirectAttributes.addFlashAttribute("deleteError", e.getMessage());
             return "redirect:/task/status";
         }

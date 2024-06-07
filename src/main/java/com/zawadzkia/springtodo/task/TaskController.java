@@ -82,12 +82,7 @@ class TaskController {
     @PostMapping(value = "/delete/{id}")
     String deletStatus(@PathVariable Long id, RedirectAttributes redirectAttributes) {
 
-        try {
-            taskService.deleteTask(id);
-        } catch (ResourceNotEmptyException | UnauthorizedAccessException e) {
-            redirectAttributes.addFlashAttribute("deleteError", e.getMessage());
-            return "redirect:/task";
-        }
+        taskService.deleteTask(id);
 
         return "redirect:/task";
     }
