@@ -1,5 +1,7 @@
 package com.zawadzkia.springtodo.task.status;
 
+import com.zawadzkia.springtodo.exception.ResourceNotEmptyException;
+import com.zawadzkia.springtodo.exception.UnauthorizedAccessException;
 import com.zawadzkia.springtodo.task.TaskDTO;
 import com.zawadzkia.springtodo.task.TaskService;
 import com.zawadzkia.springtodo.task.category.TaskCategoryDTO;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/task/status")
@@ -67,6 +70,19 @@ public class TaskStatusController {
             return "redirect:/task/status/create";
 
         taskStatusService.create(statusDTO);
+        return "redirect:/task/status";
+    }
+
+    @PostMapping(value = "/delete/{id}")
+    String deletStatus(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+
+        try {
+            taskStatusService.deleteStatus(id);
+        } catch (ResourceNotEmptyException | UnauthorizedAccessException e) {
+            redirectAttributes.addFlashAttribute("deleteError", e.getMessage());
+            return "redirect:/task/status";
+        }
+
         return "redirect:/task/status";
     }
 }

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.zawadzkia.springtodo.exception.CategoryNotEmptyException;
+import com.zawadzkia.springtodo.exception.ResourceNotEmptyException;
 import com.zawadzkia.springtodo.exception.UnauthorizedAccessException;
 import com.zawadzkia.springtodo.exception.UsernameAlreadyTakenException;
 import com.zawadzkia.springtodo.task.TaskDTO;
@@ -77,7 +77,7 @@ public class TaskCategoryController {
 
         try {
             taskCategoryService.deleteCategory(id);
-        } catch (CategoryNotEmptyException | UnauthorizedAccessException e) {
+        } catch (ResourceNotEmptyException | UnauthorizedAccessException e) {
             redirectAttributes.addFlashAttribute("deleteError", e.getMessage());
             return "redirect:/task/category";
         }
