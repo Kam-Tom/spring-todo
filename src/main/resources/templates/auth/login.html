@@ -8,6 +8,7 @@
 <body>
 <fieldset th:fragment="login-form" class="card container w-25 mt-3" sec:authorize="isAnonymous()">
     <form method="post" th:action="@{/auth/process}">
+
         <div class="card-body g-3 align-items-center">
             <div class="row mb-3">
                 <div class="col-sm-3">
@@ -34,6 +35,7 @@
                 </div>
             </div>
         </div>
+        <div class="invalid-feedback d-block" th:if="${loginError}" th:text="${loginError}"></div>
     </form>
 </fieldset>
 

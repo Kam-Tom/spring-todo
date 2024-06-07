@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.zawadzkia.springtodo.exception.UsernameAlreadyTakenException;
 import com.zawadzkia.springtodo.task.TaskService;
@@ -27,7 +28,10 @@ class AuthController {
     private final UserService userService;
 
     @GetMapping("/login")
-    String login() {
+    String login(@RequestParam(value = "error", required = false) String error, Model model) {
+        if (error != null) {
+            model.addAttribute("loginError", "Invalid username or password");
+        }
         return "auth/login";
     }
 
