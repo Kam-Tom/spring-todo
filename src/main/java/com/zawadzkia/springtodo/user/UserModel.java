@@ -44,7 +44,7 @@ public class UserModel {
     @OneToMany(mappedBy = "user", orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<Authority> authorities = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "owner", orphanRemoval = true)
+    @OneToMany(mappedBy = "owner", orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<TaskModel> tasks = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "owner", orphanRemoval = true, fetch = FetchType.EAGER)

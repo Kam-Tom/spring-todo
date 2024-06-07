@@ -33,12 +33,12 @@ class TaskController {
     String getTaskList(Model model) {
         return getTaskListCommon(model, null);
     }
-    
+
     @GetMapping(params = "search")
     String getTaskListWithSearch(Model model, @RequestParam("search") String search) {
         return getTaskListCommon(model, search);
     }
-    
+
     private String getTaskListCommon(Model model, String search) {
         List<TaskDTO> taskList = (search == null) ? taskService.getTaskList() : taskService.getTaskList(search);
         List<TaskStatusDTO> userTaskStatusList = taskStatusService.getUserTaskStatusList();
@@ -48,19 +48,31 @@ class TaskController {
         model.addAttribute("categoryList", userTaskCategoryList);
         return "task/list";
     }
+
     @GetMapping({ "/create" })
     String createTask(Model model) {
         List<TaskStatusDTO> userTaskStatusList = taskStatusService.getUserTaskStatusList();
+        List<TaskCategoryDTO> userTaskCategoryList = taskCategoryService.getUserTaskCategoryList();
         model.addAttribute("statusList", userTaskStatusList);
+        model.addAttribute("categoryList", userTaskCategoryList);
 
         return "task/create";
     }
 
     @PostMapping({ "/create" })
-    String createTask(TaskDTO taskDTO, Model model) {
-        System.out.println(taskDTO.getId() + " " + taskDTO.getSummary() + " " + taskDTO.getDescription() + " ");
+    String createTask(TaskDTO taskDTO, @RequestParam Long statusId, @RequestParam Long categoryId, Model model) {
+        TaskStatusDTO statusDTO = taskStatusService.findStatusDTO(statusId);
+        TaskCategoryDTO categoryDTO = taskCategoryService.finCategoryDTO(categoryId);
 
-        // taskCategoryService.create(category); // nie ma sesji i nie działa
-        return getTaskList(model);
+        System.out.println(
+                taskDTO.getId() + " " + taskDTO.getSummary() + " " + taskDTO.getDescription() + " "
+                        + categoryDTO.getName()
+                        + " " + statusDTO.getDisplayName());
+
+        taskDTO.setStatus(statusDTO);
+        taskDTO.setCategory(categoryDTO);
+
+        taskService.create(taskDTO);
+        return "redirect:/task";
     }
 }

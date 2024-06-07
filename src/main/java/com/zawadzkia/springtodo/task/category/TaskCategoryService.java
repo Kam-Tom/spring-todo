@@ -2,6 +2,7 @@ package com.zawadzkia.springtodo.task.category;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -37,5 +38,12 @@ public class TaskCategoryService {
                     taskCategoryDTO.getDescription(), taskCategoryDTO.getImage(), userDetails.getUser());
             taskCategoryRepository.save(categoryModel);
         }
+    }
+
+    public TaskCategoryDTO finCategoryDTO(Long id) {
+        Optional<TaskCategoryModel> categoryModel = taskCategoryRepository.findById(id);
+        return new TaskCategoryDTO(id, categoryModel.get().getName(), categoryModel.get().getDescription(),
+                categoryModel.get().getImage());
+
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +35,11 @@ public class TaskStatusService {
                     statusDTO.getDisplayName(), userDetails.getUser());
             taskStatusRepository.save(statusModel);
         }
+    }
+
+    public TaskStatusDTO findStatusDTO(Long statusId) {
+        Optional<TaskStatusModel> statusModel = taskStatusRepository.findById(statusId);
+        return new TaskStatusDTO(statusId, statusModel.get().getName(), statusModel.get().getDisplayName());
     }
 
 }

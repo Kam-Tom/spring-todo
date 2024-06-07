@@ -1,6 +1,4 @@
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org/"
->
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head th:replace="~{base :: html-head(~{::title})}">
     <title>ToDo - task create</title>
 </head>
@@ -19,26 +17,32 @@
     </div>
     <div class="mb-3" style="margin-left: 1%;">
         <label class="form-label">Start Date:</label>
-        <input type="datetime-local" id="start" name="startDate" value="2024-01-01T00:00" min="2024-01-01T00:00" max="2050-12-31T00:00" />
+        <input type="datetime-local" id="start" name="startDate" value="2024-01-01T00:00" min="2024-01-01T00:00" max="2050-12-31T00:00"/>
     </div>
     <div class="mb-3" style="margin-left: 1%;">
         <label class="form-label">Due Date:</label>
-        <input type="datetime-local" id="start" name="dueDate" value="2024-01-01T00:00" min="2024-01-01T00:00" max="2050-12-31T00:00" />
+        <input type="datetime-local" id="dueDate" name="dueDate" value="2024-01-01T00:00" min="2024-01-01T00:00" max="2050-12-31T00:00"/>
     </div>
     <div class="mb-3" style="margin-left: 1%;">
         <label class="form-label">Attachment:</label>
         <input type="text" name="attachment">
     </div>
     <div class="mb-3" style="margin-left: 1%;">
-        <label class="form-label">Category:</label>
-        <select name="id">
-            <option name="category" th:each="status: ${statusList}" th:value="${status.id}" th:text="${status.displayName}" ></option>
+        <label class="form-label">Status:</label>
+        <select name="statusId">
+            <option th:each="status: ${statusList}" th:value="${status.id}" th:text="${status.displayName}"></option>
         </select>
     </div>
-  <div style="margin: 1%; width: 10%; display: flex; justify-content: space-between; align-self: center;">
-    <button class="btn btn-outline-primary" type="submit">Add</button>
-    <button class="btn btn-outline-danger" type="button" onclick="goBack()">Cancel</button>
-  </div>
+    <div class="mb-3" style="margin-left: 1%;">
+        <label class="form-label">Category:</label>
+        <select name="categoryId">
+            <option th:each="category: ${categoryList}" th:value="${category.id}" th:text="${category.name}"></option>
+        </select>
+    </div>
+    <div style="margin: 1%; width: 10%; display: flex; justify-content: space-between; align-self: center;">
+        <button class="btn btn-outline-primary" type="submit">Add</button>
+        <button class="btn btn-outline-danger" type="button" onclick="goBack()">Cancel</button>
+    </div>
 </form>
 </body>
 
