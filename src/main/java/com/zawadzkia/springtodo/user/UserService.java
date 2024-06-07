@@ -3,7 +3,7 @@ package com.zawadzkia.springtodo.user;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.zawadzkia.springtodo.task.status.TaskStatusDTO;
+import com.zawadzkia.springtodo.exception.UsernameAlreadyTakenException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -16,12 +16,9 @@ public class UserService {
     private final BCryptPasswordEncoder passwordEncoder;
     
     public void create(UserDTO userDTO) {
-        if (!userDTO.getPassword().equals(userDTO.getMatchingPassword())) {
-            throw new RuntimeException("Passwords do not match.");
-        }
 
         if (userRepository.findByUsername(userDTO.getUsername()).isPresent()) {
-            throw new RuntimeException("Username is already taken.");
+            throw new UsernameAlreadyTakenException();
         }
 
         UserModel user = new UserModel();

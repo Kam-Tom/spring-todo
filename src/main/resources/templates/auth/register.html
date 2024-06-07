@@ -6,15 +6,16 @@
     <title>ToDo - Login</title>
 </head>
 <body>
-<fieldset th:fragment="login-form" class="card container w-25 mt-3" sec:authorize="isAnonymous()">
-    <form method="post" th:action="@{/auth/register}">
+<fieldset th:fragment="register-form" class="card container w-25 mt-3" sec:authorize="isAnonymous()">
+    <form method="post" th:action="@{/auth/register}" th:object="${userDTO}">
         <div class="card-body g-3 align-items-center">
             <div class="row mb-3">
                 <div class="col-sm-3">
                     <label for="username" class="col-form-label">Username</label>
                 </div>
                 <div class="col-sm-9">
-                    <input type="text" id="username" name="username" class="form-control" required>
+                    <input type="text" id="username" th:field="*{username}" class="form-control" required>
+                    <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
                 </div>
             </div>
             <div class="row mb-3">
@@ -22,15 +23,17 @@
                     <label for="password" class="col-form-label">Password</label>
                 </div>
                 <div class="col-sm-9">
-                    <input type="text" id="password" name="password" class="form-control" required>
+                    <input type="password" id="password" th:field="*{password}" class="form-control" required>
+                    <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
                 </div>
             </div>
             <div class="row mb-3">
                 <div class="col-sm-3">
-                    <label for="matchingPassword" class="col-form-label">Matching Password</label>
+                    <label for="confirmPassword" class="col-form-label">Matching Password</label>
                 </div>
                 <div class="col-sm-9">
-                    <input type="text" id="matchingPassword" name="matchingPassword" class="form-control" required>
+                    <input type="password" id="confirmPassword" th:field="*{confirmPassword}" class="form-control" required>
+                    <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></div>
                 </div>
             </div>
             <div class="row">
