@@ -1,6 +1,7 @@
 package com.zawadzkia.springtodo.task;
 
 import com.zawadzkia.springtodo.auth.AppUserDetails;
+import com.zawadzkia.springtodo.exception.UnauthorizedAccessException;
 import com.zawadzkia.springtodo.task.category.TaskCategoryDTO;
 import com.zawadzkia.springtodo.task.category.TaskCategoryModel;
 import com.zawadzkia.springtodo.task.category.TaskCategoryRepository;
@@ -100,5 +101,17 @@ public class TaskService {
             taskRepository.save(taskModel);
         }
 
+    }
+
+    public void deleteTask(Long id) {
+
+        AppUserDetails userDetails = (AppUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        TaskModel task = taskRepository.findById(id).orElseThrow();
+
+        if (!task.getOwner().equals(userDetails.getUser())) {
+            throw new UnauthorizedAccessException("This task does not belong to the owner");
+        }
+
+        taskRepository.deleteById(id);
     }
 }

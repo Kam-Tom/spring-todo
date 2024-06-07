@@ -8,6 +8,10 @@
 <nav th:replace="~{base :: navbar}"/>
 <div th:replace="~{auth/login :: login-form}"/>
 
+<div th:if="${deleteError}" class="alert alert-danger" role="alert">
+    <p th:text="${deleteError}"></p>
+</div>
+
 <table class="table">
     <thead>
     <tr>
@@ -42,7 +46,11 @@
         </td>
          <td th:text="${task.startDate}"></td> 
          <td th:text="${task.dueDate}"></td> 
-         <td><button class="btn btn-outline-danger">Delete</button></td> 
+         <td>
+            <form th:action="@{/task/delete/{id}(id=${task.id})}" method="post">
+                <button class="btn btn-outline-danger">Delete</button>
+            </form>
+        </td> 
     </tr>
     </tbody>
 </table>

@@ -1,5 +1,7 @@
 package com.zawadzkia.springtodo.task;
 
+import com.zawadzkia.springtodo.exception.ResourceNotEmptyException;
+import com.zawadzkia.springtodo.exception.UnauthorizedAccessException;
 import com.zawadzkia.springtodo.task.category.TaskCategoryDTO;
 import com.zawadzkia.springtodo.task.category.TaskCategoryService;
 import com.zawadzkia.springtodo.task.status.TaskStatusDTO;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -73,6 +76,19 @@ class TaskController {
         taskDTO.setCategory(categoryDTO);
 
         taskService.create(taskDTO);
+        return "redirect:/task";
+    }
+
+    @PostMapping(value = "/delete/{id}")
+    String deletStatus(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+
+        try {
+            taskService.deleteTask(id);
+        } catch (ResourceNotEmptyException | UnauthorizedAccessException e) {
+            redirectAttributes.addFlashAttribute("deleteError", e.getMessage());
+            return "redirect:/task";
+        }
+
         return "redirect:/task";
     }
 }
