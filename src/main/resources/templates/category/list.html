@@ -26,7 +26,7 @@
         <th scope="row" th:text="${category.id}"></th>
         <td th:text="${category.name}"></td>
         <td th:text="${category.description}"></td>
-        <td><img src="${category.image}"></img></td>
+        <td><img th:src="${category.image}" style="max-height: 64px;"></img></td>
         <td>
             <form th:action="@{/task/category/delete/{id}(id=${category.id})}" method="post">
                 <button class="btn btn-outline-danger">Delete</button>
