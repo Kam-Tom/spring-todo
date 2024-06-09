@@ -10,4 +10,6 @@ import com.zawadzkia.springtodo.user.UserModel;
 @Repository
 public interface TaskCategoryRepository extends JpaRepository<TaskCategoryModel, Long> {
     List<TaskCategoryModel> findAllByOwner(UserModel owner);
+
+    TaskCategoryModel findByName(String name);
 }

@@ -9,33 +9,33 @@
 <form style="margin: 1%;" th:action="@{/task/create}" method="post">
     <div class="mb-3" style="margin-left: 1%;">
         <label class="form-label">Summary:</label>
-        <input type="text" name="summary">
+        <input type="text" name="summary" class="form-control" required>
     </div>
     <div class="mb-3" style="margin-left: 1%;">
         <label class="form-label">Description:</label>
-        <input type="text" name="description">
+        <input type="text" name="description" class="form-control">
     </div>
-    <div class="mb-3" style="margin-left: 1%;">
+    <div class="mb-3" style="margin-left: 1%; width: 10%;">
         <label class="form-label">Start Date:</label>
-        <input type="datetime-local" id="start" name="startDate" value="2024-01-01T00:00" min="2024-01-01T00:00" max="2050-12-31T00:00"/>
+        <input type="datetime-local" class="form-control" id="start" name="startDate" value="2024-01-01T00:00" min="2024-01-01T00:00" max="2050-12-31T00:00"/>
     </div>
-    <div class="mb-3" style="margin-left: 1%;">
+    <div class="mb-3" style="margin-left: 1%; width: 10%;">
         <label class="form-label">Due Date:</label>
-        <input type="datetime-local" id="dueDate" name="dueDate" value="2024-01-01T00:00" min="2024-01-01T00:00" max="2050-12-31T00:00"/>
+        <input type="datetime-local" class="form-control" id="dueDate" name="dueDate" value="2024-01-01T00:00" min="2024-01-01T00:00" max="2050-12-31T00:00"/>
     </div>
     <div class="mb-3" style="margin-left: 1%;">
         <label class="form-label">Attachment:</label>
-        <input type="text" name="attachment">
+        <input type="text" name="attachment" class="form-control">
     </div>
-    <div class="mb-3" style="margin-left: 1%;">
+    <div class="mb-3" style="margin-left: 1%; width: 10%;">
         <label class="form-label">Status:</label>
-        <select name="statusId">
+        <select name="statusId" class="form-control">
             <option th:each="status: ${statusList}" th:value="${status.id}" th:text="${status.displayName}"></option>
         </select>
     </div>
-    <div class="mb-3" style="margin-left: 1%;">
+    <div class="mb-3" style="margin-left: 1%; width: 10%;">
         <label class="form-label">Category:</label>
-        <select name="categoryId">
+        <select name="categoryId" class="form-control">
             <option th:each="category: ${categoryList}" th:value="${category.id}" th:text="${category.name}"></option>
         </select>
     </div>

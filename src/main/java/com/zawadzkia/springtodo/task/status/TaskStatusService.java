@@ -1,6 +1,7 @@
 package com.zawadzkia.springtodo.task.status;
 
 import com.zawadzkia.springtodo.auth.AppUserDetails;
+import com.zawadzkia.springtodo.exception.ElementExistsException;
 import com.zawadzkia.springtodo.exception.ResourceNotEmptyException;
 import com.zawadzkia.springtodo.exception.UnauthorizedAccessException;
 import com.zawadzkia.springtodo.task.TaskModel;
@@ -34,11 +35,15 @@ public class TaskStatusService {
         return result;
     }
 
-    public void create(TaskStatusDTO statusDTO) {
+    public void create(TaskStatusDTO taskStatusDTO) {
+        if (taskStatusRepository.findByName(taskStatusDTO.getName()) != null) {
+            throw new ElementExistsException("status");
+        }
+
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof AppUserDetails userDetails) {
-            TaskStatusModel statusModel = new TaskStatusModel(null, statusDTO.getName(),
-                    statusDTO.getDisplayName(), userDetails.getUser());
+            TaskStatusModel statusModel = new TaskStatusModel(null, taskStatusDTO.getName(),
+                    taskStatusDTO.getDisplayName(), userDetails.getUser());
             taskStatusRepository.save(statusModel);
         }
     }
@@ -50,7 +55,8 @@ public class TaskStatusService {
 
     public void deleteStatus(Long id) {
 
-        AppUserDetails userDetails = (AppUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        AppUserDetails userDetails = (AppUserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
         TaskStatusModel status = taskStatusRepository.findById(id).orElseThrow();
 
         if (!status.getOwner().equals(userDetails.getUser())) {
@@ -58,7 +64,7 @@ public class TaskStatusService {
         }
 
         List<TaskModel> tasks = taskRepository.findAllByStatus(status);
-        if(!tasks.isEmpty()) {
+        if (!tasks.isEmpty()) {
             throw new ResourceNotEmptyException("Status is not empty");
         }
 

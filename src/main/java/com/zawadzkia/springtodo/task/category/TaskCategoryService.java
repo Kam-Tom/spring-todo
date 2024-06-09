@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.zawadzkia.springtodo.auth.AppUserDetails;
+import com.zawadzkia.springtodo.exception.ElementExistsException;
 import com.zawadzkia.springtodo.exception.ResourceNotEmptyException;
 import com.zawadzkia.springtodo.exception.UnauthorizedAccessException;
+import com.zawadzkia.springtodo.exception.UsernameAlreadyTakenException;
 import com.zawadzkia.springtodo.task.TaskModel;
 import com.zawadzkia.springtodo.task.TaskRepository;
 
@@ -38,6 +40,11 @@ public class TaskCategoryService {
 
     @Transactional
     public void create(TaskCategoryDTO taskCategoryDTO) {
+
+        if (taskCategoryRepository.findByName(taskCategoryDTO.getName()) != null) {
+            throw new ElementExistsException("category");
+        }
+
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof AppUserDetails userDetails) {
             TaskCategoryModel categoryModel = new TaskCategoryModel(null, taskCategoryDTO.getName(),
@@ -55,7 +62,8 @@ public class TaskCategoryService {
 
     public void deleteCategory(Long id) {
 
-        AppUserDetails userDetails = (AppUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        AppUserDetails userDetails = (AppUserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
         TaskCategoryModel category = taskCategoryRepository.findById(id).orElseThrow();
 
         if (!category.getOwner().equals(userDetails.getUser())) {
@@ -63,7 +71,7 @@ public class TaskCategoryService {
         }
 
         List<TaskModel> tasks = taskRepository.findAllByCategory(category);
-        if(!tasks.isEmpty()) {
+        if (!tasks.isEmpty()) {
             throw new ResourceNotEmptyException("Category is not empty");
         }
 

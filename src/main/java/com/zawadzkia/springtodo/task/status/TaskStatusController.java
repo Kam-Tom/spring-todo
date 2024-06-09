@@ -1,11 +1,13 @@
 package com.zawadzkia.springtodo.task.status;
 
+import com.zawadzkia.springtodo.exception.ElementExistsException;
 import com.zawadzkia.springtodo.exception.ResourceNotEmptyException;
 import com.zawadzkia.springtodo.exception.UnauthorizedAccessException;
 import com.zawadzkia.springtodo.task.TaskDTO;
 import com.zawadzkia.springtodo.task.TaskService;
 import com.zawadzkia.springtodo.task.category.TaskCategoryDTO;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -13,6 +15,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,19 +38,19 @@ public class TaskStatusController {
         model.addAttribute("statuses", userTaskStatusList);
         return "status/list";
     }
-    
+
     @GetMapping(params = "search")
     String getStatusListWithSearch(Model model, @RequestParam("search") String search) {
         List<TaskStatusDTO> userTaskStatusList = taskStatusService.getUserTaskStatusList();
         String lowerCaseSearch = search.toLowerCase();
         userTaskStatusList = userTaskStatusList.stream()
-                .filter(status -> status.getName().toLowerCase().contains(lowerCaseSearch) || 
-                (status.getDisplayName() != null && status.getDisplayName().toLowerCase().contains(lowerCaseSearch)))
+                .filter(status -> status.getName().toLowerCase().contains(lowerCaseSearch) ||
+                        (status.getDisplayName() != null
+                                && status.getDisplayName().toLowerCase().contains(lowerCaseSearch)))
                 .collect(Collectors.toList());
         model.addAttribute("statuses", userTaskStatusList);
         return "status/list";
     }
-    
 
     @PostMapping(value = "/{id}")
     String updateTask(@PathVariable Long id, @ModelAttribute("status") TaskStatusDTO taskStatusDTO) {
@@ -58,18 +61,23 @@ public class TaskStatusController {
     }
 
     @GetMapping({ "/create" })
-    String createTask() {
+    String createTask(Model model) {
+        model.addAttribute("taskStatusDTO", new TaskStatusDTO());
         return "status/create";
     }
 
     @PostMapping({ "/create" })
-    String createTask(TaskStatusDTO statusDTO, Model model) {
-        System.out.println(statusDTO.getId() + " " + statusDTO.getName() + " " + statusDTO.getDisplayName());
+    String createTask(@Valid @ModelAttribute TaskStatusDTO taskStatusDTO, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "status/create";
+        }
 
-        if (statusDTO.getName() == "")
-            return "redirect:/task/status/create";
-
-        taskStatusService.create(statusDTO);
+        try {
+            taskStatusService.create(taskStatusDTO);
+        } catch (ElementExistsException e) {
+            bindingResult.rejectValue("name", "error.name", e.getMessage());
+            return "status/create";
+        }
         return "redirect:/task/status";
     }
 

@@ -8,14 +8,15 @@
 <nav th:replace="~{base :: navbar}"/>
 <div th:replace="~{auth/login :: login-form}"/>
 
-<form style="margin: 1%;" th:action="@{/task/status/create}" method="post">
+<form style="margin: 1%;" th:action="@{/task/status/create}" th:object="${taskStatusDTO}" method="post">
     <div class="mb-3" style="margin-left: 1%;">
         <label class="form-label">Name:</label>
-        <input type="text" name="name">
+        <input type="text" name="name" th:field="*{name}" class="form-control" required>
+        <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
     </div>
     <div class="mb-3" style="margin-left: 1%;">
         <label class="form-label">Display name:</label>
-        <input type="text" name="displayName">
+        <input type="text" name="displayName" class="form-control">
     </div>
   <div style="margin: 1%; width: 10%; display: flex; justify-content: space-between; align-self: center;">
     <button class="btn btn-outline-primary" type="submit">Add</button>
