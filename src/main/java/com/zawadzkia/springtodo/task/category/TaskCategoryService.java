@@ -80,7 +80,8 @@ public class TaskCategoryService {
     }
 
     public TaskCategoryDTO getCategory(Long id) {
-        AppUserDetails userDetails = (AppUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        AppUserDetails userDetails = (AppUserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
         TaskCategoryModel categoryModel = taskCategoryRepository.findById(id).orElseThrow();
 
         if (!categoryModel.getOwner().equals(userDetails.getUser())) {
@@ -93,7 +94,14 @@ public class TaskCategoryService {
     }
 
     public void updateCategory(TaskCategoryDTO categoryDTO) {
-        AppUserDetails userDetails = (AppUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        TaskCategoryModel taskCategoryModel = taskCategoryRepository.findByName(categoryDTO.getName());
+        if (taskCategoryModel != null && taskCategoryModel.getId() != categoryDTO.getId()) {
+            throw new ElementExistsException("category");
+        }
+
+        AppUserDetails userDetails = (AppUserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
         TaskCategoryModel category = taskCategoryRepository.findById(categoryDTO.getId()).orElseThrow();
         if (!category.getOwner().equals(userDetails.getUser())) {
             throw new UnauthorizedAccessException("This category does not belong to the owner");

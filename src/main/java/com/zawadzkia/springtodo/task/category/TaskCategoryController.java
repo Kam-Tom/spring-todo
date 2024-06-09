@@ -55,7 +55,7 @@ public class TaskCategoryController {
         return "category/list";
     }
 
-    @PostMapping(value = "/{ids}")
+    @PostMapping(value = "/{id}")
     String updateCategory(@PathVariable Long id, @ModelAttribute("category") TaskCategoryDTO taskCategoryDTO) {
         TaskDTO taskDTO = taskService.getTaskDTOById(id);
         taskDTO.setCategory(taskCategoryDTO);
@@ -87,17 +87,24 @@ public class TaskCategoryController {
 
     @GetMapping(value = "update/{id}")
     String update(@PathVariable Long id, Model model) {
-
         TaskCategoryDTO category = taskCategoryService.getCategory(id);
         model.addAttribute("category", category);
-
         return "category/update";
     }
 
     @PostMapping(value = "update/{id}")
-    String updateCategory(@PathVariable Long id, TaskCategoryDTO categoryDTO, RedirectAttributes redirectAttributes) {
+    String updateCategory(@PathVariable Long id, @Valid @ModelAttribute("category") TaskCategoryDTO categoryDTO,
+            BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "category/update";
+        }
 
-        taskCategoryService.updateCategory(categoryDTO);
+        try {
+            taskCategoryService.updateCategory(categoryDTO);
+        } catch (ElementExistsException e) {
+            bindingResult.rejectValue("name", "error.name", e.getMessage());
+            return "category/update";
+        }
 
         return "redirect:/task/category";
     }

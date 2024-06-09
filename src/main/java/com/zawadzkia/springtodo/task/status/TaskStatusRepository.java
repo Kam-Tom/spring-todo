@@ -10,5 +10,5 @@ import java.util.List;
 public interface TaskStatusRepository extends JpaRepository<TaskStatusModel, Long> {
     List<TaskStatusModel> findAllByOwner(UserModel owner);
 
-    Object findByName(String name);
+    TaskStatusModel findByName(String name);
 }

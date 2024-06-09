@@ -83,16 +83,26 @@ public class TaskStatusController {
 
     @GetMapping(value = "update/{id}")
     String updateStatus(@PathVariable Long id, Model model) {
-
         TaskStatusDTO status = taskStatusService.getStatus(id);
         model.addAttribute("status", status);
-
         return "status/update";
     }
 
     @PostMapping(value = "update/{id}")
-    String updateStatus(@PathVariable Long id, @ModelAttribute TaskStatusDTO statusDTO) {
-        taskStatusService.updateStatus(statusDTO);
+    String updateStatus(@PathVariable Long id, @Valid @ModelAttribute("status") TaskStatusDTO statusDTO,
+            BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("status", statusDTO);
+            return "status/update";
+        }
+
+        try {
+            taskStatusService.updateStatus(statusDTO);
+        } catch (ElementExistsException e) {
+            bindingResult.rejectValue("name", "error.name", e.getMessage());
+            model.addAttribute("status", statusDTO);
+            return "status/update";
+        }
 
         return "redirect:/task/status";
     }

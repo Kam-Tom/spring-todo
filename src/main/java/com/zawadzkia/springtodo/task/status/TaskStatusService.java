@@ -73,7 +73,13 @@ public class TaskStatusService {
     }
 
     public void updateStatus(TaskStatusDTO statusDTO) {
-        AppUserDetails userDetails = (AppUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        TaskStatusModel taskStatusModel = taskStatusRepository.findByName(statusDTO.getName());
+        if (taskStatusModel != null && taskStatusModel.getId() != statusDTO.getId()) {
+            throw new ElementExistsException("status");
+        }
+
+        AppUserDetails userDetails = (AppUserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
         TaskStatusModel status = taskStatusRepository.findById(statusDTO.getId()).orElseThrow();
         if (!status.getOwner().equals(userDetails.getUser())) {
             throw new UnauthorizedAccessException("This category does not belong to the owner");
@@ -81,12 +87,13 @@ public class TaskStatusService {
 
         status.setName(statusDTO.getName());
         status.setDisplayName(statusDTO.getDisplayName());
-        
+
         taskStatusRepository.save(status);
     }
 
     public TaskStatusDTO getStatus(Long id) {
-        AppUserDetails userDetails = (AppUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        AppUserDetails userDetails = (AppUserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
         TaskStatusModel statusModel = taskStatusRepository.findById(id).orElseThrow();
 
         if (!statusModel.getOwner().equals(userDetails.getUser())) {

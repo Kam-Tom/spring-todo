@@ -33,9 +33,16 @@
                 </select>
             </form>        
         </td>
-        <td th:text="${task.category.name}"></td>
+        <td>
+            <form th:action="@{/task/category/{id}(id=${task.id})}" method="post" onchange="submit()" th:object="${category}">
+                <select name="id" >
+                    <option th:each="category: ${categoryList}" th:value="${category.id}" th:text="${category.name}" th:selected="${category.id == task.category.id}"></option>
+                </select>
+            </form>        
+        </td>
         <td th:text="${task.startDate}"></td> 
         <td th:text="${task.dueDate}"></td> 
+        <td>
         <td>
             <form th:action="@{/task/delete/{id}(id=${task.id})}" method="post">
                 <button class="btn btn-outline-danger">Delete</button>
