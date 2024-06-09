@@ -29,7 +29,7 @@ public class TaskStatusService {
         ArrayList<TaskStatusDTO> result = new ArrayList<>();
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof AppUserDetails userDetails) {
-            List<TaskStatusModel> allByOwner = taskStatusRepository.findAllByOwner(userDetails.getUser());
+            List<TaskStatusModel> allByOwner = taskStatusRepository.findAllByOwnerOrderById(userDetails.getUser());
             allByOwner.forEach(status -> result.add(new TaskStatusDTO(status.getId(), status.getName(),
                     status.getDisplayName())));
         }

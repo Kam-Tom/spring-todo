@@ -32,7 +32,7 @@ public class TaskCategoryService {
         ArrayList<TaskCategoryDTO> result = new ArrayList<>();
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof AppUserDetails userDetails) {
-            List<TaskCategoryModel> allByOwner = taskCategoryRepository.findAllByOwner(userDetails.getUser());
+            List<TaskCategoryModel> allByOwner = taskCategoryRepository.findAllByOwnerOrderById(userDetails.getUser());
             allByOwner.forEach(category -> result.add(new TaskCategoryDTO(category.getId(), category.getName(),
                     category.getDescription(), category.getImage())));
         }
@@ -111,6 +111,6 @@ public class TaskCategoryService {
         category.setDescription(categoryDTO.getDescription());
         category.setImage(categoryDTO.getImage());
 
-        taskCategoryRepository.save(category);
+        taskCategoryRepository.flush();
     }
 }
