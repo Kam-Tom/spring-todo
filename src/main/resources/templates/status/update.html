@@ -1,0 +1,31 @@
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org/"
+>
+<head th:replace="~{base :: html-head(~{::title})}">
+    <title>ToDo - category update</title>
+</head>
+<body>
+<nav th:replace="~{base :: navbar}"/>
+<div th:replace="~{auth/login :: login-form}"/>
+
+<form th:action="@{/task/status/update/{id}(id=${status.id})}" th:object="${status}" method="post" class="d-grid gap-2 col-3 mx-auto pt-3">
+    <div class="mb-3">
+        <label for="id" class="form-label">Id</label>
+        <input type="text" class="form-control" id="id" th:field="*{id}" readonly style="background-color: #D3D3D3;">
+        
+    </div>
+    <div class="mb-3">
+        <label for="name" class="form-label">Name</label>
+        <input type="text" class="form-control" id="name" th:field="*{name}">
+        <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+    </div>
+    <div class="mb-3">
+        <label for="displayName" class="form-label">Display Name</label>
+        <input type="text" class="form-control" id="displayName" th:field="*{displayName}">
+        <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('displayName')}" th:errors="*{displayName}"></div>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+</body>
+
+</html>

@@ -81,6 +81,22 @@ public class TaskStatusController {
         return "redirect:/task/status";
     }
 
+    @GetMapping(value = "update/{id}")
+    String updateStatus(@PathVariable Long id, Model model) {
+
+        TaskStatusDTO status = taskStatusService.getStatus(id);
+        model.addAttribute("status", status);
+
+        return "status/update";
+    }
+
+    @PostMapping(value = "update/{id}")
+    String updateStatus(@PathVariable Long id, @ModelAttribute TaskStatusDTO statusDTO) {
+        taskStatusService.updateStatus(statusDTO);
+
+        return "redirect:/task/status";
+    }
+
     @PostMapping(value = "/delete/{id}")
     String deletStatus(@PathVariable Long id, RedirectAttributes redirectAttributes) {
 

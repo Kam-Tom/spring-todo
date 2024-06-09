@@ -7,6 +7,7 @@ import com.zawadzkia.springtodo.exception.UnauthorizedAccessException;
 import com.zawadzkia.springtodo.task.TaskModel;
 import com.zawadzkia.springtodo.task.TaskRepository;
 import com.zawadzkia.springtodo.task.TaskService;
+import com.zawadzkia.springtodo.task.category.TaskCategoryDTO;
 import com.zawadzkia.springtodo.task.category.TaskCategoryModel;
 
 import lombok.RequiredArgsConstructor;
@@ -69,6 +70,30 @@ public class TaskStatusService {
         }
 
         taskStatusRepository.delete(status);
+    }
+
+    public void updateStatus(TaskStatusDTO statusDTO) {
+        AppUserDetails userDetails = (AppUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        TaskStatusModel status = taskStatusRepository.findById(statusDTO.getId()).orElseThrow();
+        if (!status.getOwner().equals(userDetails.getUser())) {
+            throw new UnauthorizedAccessException("This category does not belong to the owner");
+        }
+
+        status.setName(statusDTO.getName());
+        status.setDisplayName(statusDTO.getDisplayName());
+        
+        taskStatusRepository.save(status);
+    }
+
+    public TaskStatusDTO getStatus(Long id) {
+        AppUserDetails userDetails = (AppUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        TaskStatusModel statusModel = taskStatusRepository.findById(id).orElseThrow();
+
+        if (!statusModel.getOwner().equals(userDetails.getUser())) {
+            throw new UnauthorizedAccessException("This status does not belong to the owner");
+        }
+
+        return new TaskStatusDTO(statusModel.getId(), statusModel.getName(), statusModel.getDisplayName());
     }
 
 }

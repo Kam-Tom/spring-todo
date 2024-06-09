@@ -1,0 +1,35 @@
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org/"
+>
+<head th:replace="~{base :: html-head(~{::title})}">
+    <title>ToDo - category update</title>
+</head>
+<body>
+<nav th:replace="~{base :: navbar}"/>
+<div th:replace="~{auth/login :: login-form}"/>
+
+<form th:action="@{/task/category/update/{id}(id=${category.id})}" th:object="${category}" method="post" class="d-grid gap-2 col-3 mx-auto pt-3">
+    <div class="mb-3">
+        <label for="id" class="form-label">Id</label>
+        <input type="text" class="form-control" id="id" th:field="*{id}" readonly style="background-color: #D3D3D3;">
+        
+    </div>
+    <div class="mb-3">
+        <label for="name" class="form-label">Name</label>
+        <input type="text" class="form-control" id="name" th:field="*{name}">
+        <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+    </div>
+    <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <input type="text" class="form-control" id="description" th:field="*{description}">
+        <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+    </div>
+    <div class="mb-3">
+        <label for="image" class="form-label">Image</label>
+        <input type="text" class="form-control" id="image" th:field="*{image}">
+        <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></div>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+</body>
+</html>

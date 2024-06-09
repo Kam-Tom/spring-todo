@@ -2,6 +2,7 @@ package com.zawadzkia.springtodo.task.category;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale.Category;
 import java.util.Optional;
 
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -76,5 +77,32 @@ public class TaskCategoryService {
         }
 
         taskCategoryRepository.delete(category);
+    }
+
+    public TaskCategoryDTO getCategory(Long id) {
+        AppUserDetails userDetails = (AppUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        TaskCategoryModel categoryModel = taskCategoryRepository.findById(id).orElseThrow();
+
+        if (!categoryModel.getOwner().equals(userDetails.getUser())) {
+            throw new UnauthorizedAccessException("This category does not belong to the owner");
+        }
+
+        return new TaskCategoryDTO(categoryModel.getId(), categoryModel.getName(), categoryModel.getDescription(),
+                categoryModel.getImage());
+
+    }
+
+    public void updateCategory(TaskCategoryDTO categoryDTO) {
+        AppUserDetails userDetails = (AppUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        TaskCategoryModel category = taskCategoryRepository.findById(categoryDTO.getId()).orElseThrow();
+        if (!category.getOwner().equals(userDetails.getUser())) {
+            throw new UnauthorizedAccessException("This category does not belong to the owner");
+        }
+
+        category.setName(categoryDTO.getName());
+        category.setDescription(categoryDTO.getDescription());
+        category.setImage(categoryDTO.getImage());
+
+        taskCategoryRepository.save(category);
     }
 }
