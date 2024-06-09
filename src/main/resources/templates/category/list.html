@@ -11,7 +11,7 @@
 <div th:if="${deleteError}" class="alert alert-danger" role="alert">
     <p th:text="${deleteError}"></p>
 </div>
-<table class="table">
+<table class="table ">
     <thead>
     <tr>
         <th scope="col">#</th>
@@ -19,18 +19,22 @@
         <th scope="col">Description</th>
         <th scope="col">Image</th>
         <th scope="col">Delete</th>
+        <th scope="col">Edit</th>
     </tr>
     </thead>
     <tbody>
-     <tr th:each="category: ${categories}">
-        <th scope="row" th:text="${category.id}"></th>
-        <td th:text="${category.name}"></td>
-        <td th:text="${category.description}"></td>
-        <td><img th:src="${category.image}" style="max-height: 64px;"></img></td>
+        <tr th:each="category: ${categories}">
+        <th scope="row" th:text="${category.id}"><a></a></th>
+        <td th:text="${category.name}"><a></a></td>
+        <td th:text="${category.description}"><a></a></td>
+        <td><img th:src="${category.image}" style="max-height: 64px;"></img><a></a></td>
         <td>
             <form th:action="@{/task/category/delete/{id}(id=${category.id})}" method="post">
                 <button class="btn btn-outline-danger">Delete</button>
             </form>
+        </td> 
+        <td>
+            <a th:href="@{/task/category/update/{id}(id=${category.id})}" class="btn btn-outline-warning">Edit</a>
         </td> 
     </tr> 
     </tbody>

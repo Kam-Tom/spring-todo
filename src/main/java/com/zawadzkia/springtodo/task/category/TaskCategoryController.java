@@ -1,6 +1,7 @@
 package com.zawadzkia.springtodo.task.category;
 
 import java.util.List;
+import java.util.Locale.Category;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
@@ -48,13 +49,6 @@ public class TaskCategoryController {
         model.addAttribute("categories", userTaskCategoryList);
         return "category/list";
     }
-    @PostMapping(value = "/{id}")
-    String updateCategory(@PathVariable Long id, @ModelAttribute("category") TaskCategoryDTO taskCategoryDTO) {
-        TaskDTO taskDTO = taskService.getTaskDTOById(id);
-        taskDTO.setCategory(taskCategoryDTO);
-        taskService.update(taskDTO);
-        return "redirect:/task";
-    }
 
     @GetMapping({ "/create" })
     String createTask() {
@@ -71,7 +65,21 @@ public class TaskCategoryController {
         taskCategoryService.create(categoryDTO);
         return "redirect:/task/category";
     }
+    @GetMapping(value = "update/{id}")
+    String update(@PathVariable Long id, Model model) {
 
+        TaskCategoryDTO category = taskCategoryService.getCategory(id);
+        model.addAttribute("category", category);
+
+        return "category/update";
+    }
+    @PostMapping(value = "update/{id}")
+    String updateCategory(@PathVariable Long id, TaskCategoryDTO categoryDTO, RedirectAttributes redirectAttributes) {
+
+        taskCategoryService.updateCategory(categoryDTO);
+
+        return "redirect:/task/category";
+    }
     @PostMapping(value = "/delete/{id}")
     String deleteCategory(@PathVariable Long id, RedirectAttributes redirectAttributes) {
 
