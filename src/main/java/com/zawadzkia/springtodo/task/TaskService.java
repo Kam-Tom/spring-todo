@@ -35,14 +35,14 @@ public class TaskService {
     public List<TaskDTO> getTaskList(String search) {
         UserModel user = userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
                 .orElseThrow();
-        Set<TaskModel> tasks = user.getTasks();
+        List<TaskModel> tasks = taskRepository.findAllByOwnerOrderById(user);
         if (search != null && !search.isEmpty()) {
             String lowerCaseSearch = search.toLowerCase();
             tasks = tasks.stream()
                     .filter(task -> task.getSummary().toLowerCase().contains(lowerCaseSearch) ||
                             (task.getDescription() != null
                                     && task.getDescription().toLowerCase().contains(lowerCaseSearch)))
-                    .collect(Collectors.toSet());
+                    .collect(Collectors.toList());
         }
         List<TaskDTO> result = new ArrayList<>();
         tasks.forEach(taskModel -> {
